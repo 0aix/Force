@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\AUDIO">
+      <UniqueIdentifier>{fa9c49b0-71ff-4f0c-842d-1993a4d1f756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GRAPHICS">
+      <UniqueIdentifier>{dd7eebbc-cf51-4186-9703-fa4b7583b021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SCENES">
+      <UniqueIdentifier>{7f73ecfb-620f-4bed-ba85-0ca775f7a0e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AUDIO">
+      <UniqueIdentifier>{f66d1d19-16a3-47dd-94b0-d854bc90b2cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GRAPHICS">
+      <UniqueIdentifier>{3b5eca26-fc76-4f9c-b503-a67529fe4bc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SCENES">
+      <UniqueIdentifier>{40942944-3db8-45a4-83ba-98422a652d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\VALUES">
+      <UniqueIdentifier>{4b06af68-40ff-417d-b50e-8c914c9ed10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FORCE">
+      <UniqueIdentifier>{917da49f-3c18-4a1f-89d1-5625b327b010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\WORLD">
+      <UniqueIdentifier>{316081f0-716e-4c1d-bde3-d233a772ecef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Jotunheimr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cardinal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Source Files\GRAPHICS</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>Source Files\GRAPHICS</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source Files\AUDIO</Filter>
+    </ClCompile>
+    <ClCompile Include="Voice.cpp">
+      <Filter>Source Files\AUDIO</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Source Files\SCENES</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Cardinal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Jotunheimr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files\AUDIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files\AUDIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw.h">
+      <Filter>Header Files\GRAPHICS</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files\GRAPHICS</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\GRAPHICS</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\SCENES</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files\VALUES</Filter>
+    </ClInclude>
+    <ClInclude Include="TO.h">
+      <Filter>Header Files\VALUES</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes.h">
+      <Filter>Header Files\SCENES</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\WORLD</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
