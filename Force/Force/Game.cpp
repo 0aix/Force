@@ -62,7 +62,7 @@ namespace Game
 
 	void RenderThread()
 	{
-		for (; !bExit; Sleep(1))
-			Cardinal::RenderScene();
+		//for (; !bExit; Sleep(1))
+		//	Cardinal::RenderScene();
 	}
 }

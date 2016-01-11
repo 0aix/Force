@@ -30,7 +30,7 @@ void DebugDraw::Draw(b2World& world, const Camera& camera)
 	m_camera = camera;
 	world.DrawDebugData();
 	Render();
-	FPS();
+	FramesPerSecond();
 }
 
 void DebugDraw::Render()
@@ -61,7 +61,7 @@ void DebugDraw::Render()
 	vertex_count = 0;
 }
 
-void DebugDraw::FPS()
+void DebugDraw::FramesPerSecond()
 {
 	RECT rect = { 5, 5, 100, 20 }; //left, top, right, bottom
 	if (++framecount >= 30)

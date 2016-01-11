@@ -12,7 +12,6 @@ namespace Cardinal
 	Input* pInput;
 	Scene* pScene;
 	RAWINPUT* pBuffer;
-	DWORD dwSize;
 
 	HWND hWnd;
 	mutex mtx;
@@ -78,12 +77,12 @@ namespace Cardinal
 
 	void BufferInput(HRAWINPUT handle)
 	{
-		if (ri_start != ri_end)
+		int diff = ri_end - ri_start + 1;
+		if (diff != 0 && diff != RAWINPUT_BUFFER_SIZE)
 		{
-			dwSize = sizeof(RAWINPUT);
+			DWORD dwSize = sizeof(RAWINPUT);
 			GetRawInputData(handle, RID_INPUT, pBuffer + ri_end, (PUINT)&dwSize, sizeof(RAWINPUTHEADER));
-			ri_end++;
-			if (ri_end == RAWINPUT_BUFFER_SIZE)
+			if (++ri_end == RAWINPUT_BUFFER_SIZE)
 				ri_end = 0;
 		}
 	}

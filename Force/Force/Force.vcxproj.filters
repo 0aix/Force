@@ -40,6 +40,9 @@
     <Filter Include="Header Files\WORLD">
       <UniqueIdentifier>{316081f0-716e-4c1d-bde3-d233a772ecef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\WORLD">
+      <UniqueIdentifier>{4ba42f4b-baf3-4d20-801d-431dcf770662}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -69,6 +72,18 @@
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>Source Files\SCENES</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactListener.cpp">
+      <Filter>Source Files\WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>Source Files\WORLD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +131,12 @@
       <Filter>Header Files\WORLD</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
+      <Filter>Header Files\WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files\WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListener.h">
       <Filter>Header Files\WORLD</Filter>
     </ClInclude>
   </ItemGroup>

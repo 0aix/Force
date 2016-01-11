@@ -11,6 +11,7 @@ using namespace std;
 #include <XAudio2.h>
 #include <vorbisfile.h>
 
+#include "Constants.h"
 #include "Misc.h"
 #include "Cardinal.h"
 #include "Jotunheimr.h"

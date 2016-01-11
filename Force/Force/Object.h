@@ -5,6 +5,7 @@
 //***********
 #include "Sprite.h"
 
+//replace w/ bitmask
 enum ObjectType
 {
 	OBJECT = -1,
@@ -14,55 +15,103 @@ enum ObjectType
 	PLAYER = 3,
 	MOB = 4,
 	SKILL = 5,
-	OBSTACLE = 6,
+	BALL = 6,
+	PUSH = 7,
+	PULL = 8
 };
 
-//Object interface
+class Push;
+class Pull;
+
+//Object
 class Object
 {
 public:
-	Object(b2World* b2w) { world = b2w; }
+	Object(b2Body* b) { body = b; }
+	virtual ~Object() { body->GetWorld()->DestroyBody(body); }
+
 	ObjectType type = ObjectType::OBJECT;
 
 protected:
-	b2World* world;
 	b2Body* body;
-	Animation<b2FixtureDef> manager;
-	Anim<b2FixtureDef>** anim_list;
-	int anim_count;
 };
 
 //DynamicObject interface
 class DynamicObject : public Object
 {
 public:
-	DynamicObject(b2World* b2w) : Object(b2w) { type = ObjectType::DYNAMIC; }
+	DynamicObject(b2Body* b) : Object(b) { type = ObjectType::DYNAMIC; }
 	virtual void Update() = 0;
 
-protected:
 };
 
 //Entity interface
 class Entity : public DynamicObject
 {
 public:
-	Entity(b2World* b2w) : DynamicObject(b2w) { type = ObjectType::ENTITY; }
+	Entity(b2Body* b) : DynamicObject(b) { type = ObjectType::ENTITY; }
+	//virtual ~Entity();
 
+protected:
+	b2Fixture* hitbox;
+	Animation<b2FixtureDef> manager;
+	Anim<b2FixtureDef>** anim_list;
+	int anim_count;
 };
 
 //Player interface (yup, we're gonna polymorph the classes!)
 class Player : public Entity
 {
 public:
-	Player(b2World* b2w) : Entity(b2w) { type = ObjectType::PLAYER; }
-	void Update() {}
+	Player(b2Body* b);
+	void Update();
+	void FPush();
+	void FPull();
 
+	int move_state = 0;
+	bool jump = false;
+	int jumpcd = 0;
+	bool in_air = true;
+	bool fpush = false;
+	int fpushcd = 0;
+	Push* push = NULL;
+	bool fpull = false;
+	int fpullcd = 0;
+	Pull* pull = NULL;
+	bool hasball = false;
+	b2DistanceJoint* balljoint = NULL;
 };
 
 //Mob interface
 class Mob : public Entity
 {
 public:
-	Mob(b2World* b2w) : Entity(b2w) { type = ObjectType::MOB; }
+	Mob(b2Body* b) : Entity(b) { type = ObjectType::MOB; }
+
+};
+
+class Push : public Entity
+{
+public:
+	Push(b2Body* b);
+	void Update();
+
+protected:
+	int num;
+	float radius;
+	Player* player;
+
+};
+
+class Pull : public Entity
+{
+public:
+	Pull(b2Body* b);
+	void Update();
+
+protected:
+	int num;
+	float radius;
+	Player* player;
 
 };

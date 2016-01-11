@@ -5,13 +5,5 @@
 class Terrain : public Object
 {
 public:
-	ObjectType type = ObjectType::TERRAIN;
-};
-
-class TerrainFactory
-{
-public:
-
-private:
-
+	Terrain(b2Body* b) : Object(b) { type = ObjectType::TERRAIN; }
 };

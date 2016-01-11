@@ -49,5 +49,5 @@ private:
 	char afpsbuffer[256];
 
 	void Render();
-	void FPS();
+	void FramesPerSecond();
 };

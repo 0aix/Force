@@ -120,21 +120,26 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Cardinal.cpp" />
+    <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Jotunheimr.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Skill.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Voice.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Cardinal.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="ContactListener.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -146,6 +151,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TO.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

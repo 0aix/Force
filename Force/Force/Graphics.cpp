@@ -22,7 +22,7 @@ namespace Graphics
 		d3dpp.EnableAutoDepthStencil = TRUE;
 		d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 		d3dpp.MultiSampleType = D3DMULTISAMPLE_2_SAMPLES;
-		d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+		//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
 		if (FAILED(d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hwnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &d3ddev)))
 			return false;

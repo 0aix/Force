@@ -47,8 +47,9 @@ public:
 	void Render();
 
 private:
-	b2Vec2 gravity = b2Vec2(0.0f, 10.0f);
-	b2World world = b2World(gravity);
+	World world;
+	Player* player;
+	Object* ball;
 
 	Camera camera;
 	Clock clock;
