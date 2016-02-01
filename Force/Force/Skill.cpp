@@ -10,6 +10,7 @@ Push::Push(b2Body* b) : Entity(b)
 	num = 0;
 	radius = 0.21875f;
 	player = (Player*)body->GetUserData();
+	body->SetUserData(this);
 }
 
 void Push::Update()
@@ -38,7 +39,6 @@ void Push::Update()
 	}
 	else
 	{
-		Player* player = (Player*)body->GetUserData();
 		player->push = NULL;
 		delete this;
 	}
@@ -53,6 +53,7 @@ Pull::Pull(b2Body* b) : Entity(b)
 	num = 0;
 	radius = 1.09375f;
 	player = (Player*)body->GetUserData();
+	body->SetUserData(this);
 }
 
 void Pull::Update()
@@ -81,7 +82,6 @@ void Pull::Update()
 	}
 	else
 	{
-		Player* player = (Player*)body->GetUserData();
 		player->pull = NULL;
 		delete this;
 	}

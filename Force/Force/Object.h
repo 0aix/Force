@@ -64,9 +64,14 @@ class Player : public Entity
 {
 public:
 	Player(b2Body* b);
+	~Player();
 	void Update();
 	void FPush();
 	void FPull();
+	void FPickUp();
+	void FReady();
+	void FCharge(float x, float y);
+	void FPass();
 
 	int move_state = 0;
 	bool jump = false;
@@ -78,8 +83,15 @@ public:
 	bool fpull = false;
 	int fpullcd = 0;
 	Pull* pull = NULL;
+	bool fpickup = false;
+	int fpickupcd = 0;
 	bool hasball = false;
-	b2DistanceJoint* balljoint = NULL;
+	b2Body* ball;
+	b2Joint* balljoint = NULL;
+	bool fpass = false;
+	b2Vec2 fpoint;
+	b2Vec2 fpower;
+	b2Body* powervector; //placeholder for an actual effect
 };
 
 //Mob interface
@@ -96,7 +108,6 @@ public:
 	Push(b2Body* b);
 	void Update();
 
-protected:
 	int num;
 	float radius;
 	Player* player;
@@ -108,8 +119,7 @@ class Pull : public Entity
 public:
 	Pull(b2Body* b);
 	void Update();
-
-protected:
+	
 	int num;
 	float radius;
 	Player* player;

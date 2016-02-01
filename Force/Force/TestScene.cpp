@@ -37,8 +37,6 @@ void TestScene::Release()
 
 void TestScene::Update()
 {
-	const int32 velocityIterations = 10;
-	const int32 positionIterations = 8;
 	dTime += clock.Time();
 	while (dTime >= C::TICK)
 	{
@@ -46,32 +44,62 @@ void TestScene::Update()
 		dTime -= C::TICK;
 		if (dTime < C::TICK)
 			Render();
+		if (reset)
+		{
+			Cardinal::NextScene(new TestScene());
+			Release();
+			return;
+		}
 	}
 }
 
 void TestScene::HandleInput()
 {
-	if (pInput->VK[VK_LEFT])
-		player->move_state = -1;
-	if (pInput->VK[VK_RIGHT])
-		player->move_state = 1;
-
-	if (!pInput->VK[VK_LEFT] && !pInput->VK[VK_RIGHT])
-		player->move_state = 0;
-	else if (pInput->VK[VK_LEFT] && pInput->VK[VK_RIGHT])
+	if (pInput->CLR)
 	{
-		if (pInput->keycode == VK_LEFT)
-			player->move_state = -1;
-		else if (pInput->keycode == VK_RIGHT)
-			player->move_state = 1;
+
 	}
-	else if (pInput->VK[VK_LEFT])
-		player->move_state = -1;
-	else if (pInput->VK[VK_RIGHT])
-		player->move_state = 1;
-	player->jump = pInput->VK[VK_UP];
-	player->fpush = pInput->VK[VK_SPACE];
-	player->fpull = pInput->VK[VK_CONTROL];
+	else if (pInput->type == RIM_TYPEMOUSE)
+	{
+		byte buttons = pInput->buttons;
+		player->fpull = RI_RIGHT_KEY_DOWN(buttons);
+		if (player->hasball && !player->fpass)
+		{
+			if (RI_LEFT_KEY_DOWN(buttons))
+				player->FReady();
+		}
+		else if (player->hasball && player->fpass)
+		{
+			player->FCharge(pInput->vel.x, pInput->vel.y);
+			if (RI_LEFT_KEY_UP(buttons))
+				player->FPass();
+		}
+	}
+	else //pInput->type == RIM_TYPEKEYBOARD
+	{
+		if (pInput->VK['A'])
+			player->move_state = -1;
+		if (pInput->VK['D'])
+			player->move_state = 1;
+
+		if (!pInput->VK['A'] && !pInput->VK['D'])
+			player->move_state = 0;
+		else if (pInput->VK['A'] && pInput->VK['D'])
+		{
+			if (pInput->keycode == 'A')
+				player->move_state = -1;
+			else if (pInput->keycode == 'D')
+				player->move_state = 1;
+		}
+		else if (pInput->VK['A'])
+			player->move_state = -1;
+		else if (pInput->VK['D'])
+			player->move_state = 1;
+		player->jump = pInput->VK['W'];
+		player->fpush = pInput->VK[VK_SPACE];
+
+		reset = pInput->VK[VK_ESCAPE];
+	}
 }
 
 void TestScene::Render()
@@ -80,6 +108,20 @@ void TestScene::Render()
 	d3ddev->BeginScene();
 
 	debugdraw.Draw(*world.GetWorld(), camera);
+
+	/*POINT pos = pInput->pos;
+
+	int indices[4] = { 0, 1, 2, 3 };
+	VERTEX_2D_DIF vertices[4];
+	vertices[0].x = pos.x - 5.0f;
+	vertices[0].y = pos.y - 5.0f;
+	vertices[1].x = pos.x + 5.0f;
+	vertices[1].y = pos.y - 5.0f;
+	vertices[2].x = pos.x + 5.0f;
+	vertices[2].y = pos.y + 5.0f;
+	vertices[3].x = pos.x - 5.0f;
+	vertices[3].y = pos.y + 5.0f;
+	d3ddev->DrawIndexedPrimitiveUP(D3DPT_TRIANGLEFAN, 0, 4, 2, indices, D3DFMT_INDEX32, vertices, sizeof(VERTEX_2D_DIF));*/
 
 	d3ddev->EndScene();
 	d3ddev->Present(NULL, NULL, NULL, NULL);

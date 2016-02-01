@@ -23,7 +23,7 @@ namespace Cardinal
 	bool Initialize(HWND hwnd)
 	{
 		pStates = new void*[STATE_COUNT];
-		pInput = new Input{ 0 };
+		pInput = new Input{};
 		pBuffer = new RAWINPUT[RAWINPUT_BUFFER_SIZE];
 
 		hWnd = hwnd;
@@ -64,12 +64,10 @@ namespace Cardinal
 		RAWINPUTDEVICE RID[2];
 		RID[0].usUsagePage = 1;
 		RID[0].usUsage = 2;
-		RID[0].dwFlags = RIDEV_NOLEGACY;
 		RID[0].dwFlags = 0;
 		RID[0].hwndTarget = hWnd;
 		RID[1].usUsagePage = 1;
 		RID[1].usUsage = 6;
-		RID[1].dwFlags = RIDEV_NOLEGACY;
 		RID[1].dwFlags = 0;
 		RID[1].hwndTarget = hWnd;
 		return RegisterRawInputDevices(RID, 2, sizeof(RAWINPUTDEVICE));
@@ -103,44 +101,40 @@ namespace Cardinal
 			raw = pBuffer[ri_start];
 			if (raw.header.dwType == RIM_TYPEMOUSE)
 			{
-				pInput->type = 0;
+				pInput->type = RIM_TYPEMOUSE;
+				GetCursorPos(&pInput->pos);
+				ScreenToClient(hWnd, &pInput->pos);
 				RAWMOUSE mouse = raw.data.mouse;
-				if (mouse.usFlags & 0x01) // absolute
+				if (mouse.usFlags ^ MOUSE_MOVE_ABSOLUTE)
 				{
-					pInput->pos.x = mouse.lLastX;
-					pInput->pos.y = mouse.lLastY;
-					pInput->relative = false;
+					pInput->vel.x = mouse.lLastX;
+					pInput->vel.y = mouse.lLastY;
 				}
-				else // relative
-				{
-					pInput->pos.x += mouse.lLastX;
-					pInput->pos.y += mouse.lLastY;
-					pInput->relative = true;
-				}
-				pInput->DX = mouse.lLastX;
-				pInput->DY = mouse.lLastY;
-				pInput->L = mouse.usButtonFlags;
-				pInput->R = mouse.usButtonFlags >> 0x02;
-				pInput->M = mouse.usButtonFlags >> 0x04;
+				byte buttons = pInput->buttons & (RI_LEFT_FLAG | RI_RIGHT_FLAG | RI_MIDDLE_FLAG); //zero out event flags
+				byte flags;
+				if (flags = mouse.usButtonFlags & (RI_MOUSE_LEFT_BUTTON_DOWN | RI_MOUSE_LEFT_BUTTON_UP))
+					buttons = (buttons & 0xFC) | flags | RI_LEFT_EVENT;
+				if (flags = mouse.usButtonFlags & (RI_MOUSE_RIGHT_BUTTON_DOWN | RI_MOUSE_RIGHT_BUTTON_UP))
+					buttons = (buttons & 0xF3) | flags | RI_RIGHT_EVENT;
+				if (flags = mouse.usButtonFlags & (RI_MOUSE_MIDDLE_BUTTON_DOWN | RI_MOUSE_MIDDLE_BUTTON_UP))
+					buttons = (buttons & 0xCF) | flags | RI_MIDDLE_EVENT;
 				if (mouse.usButtonFlags & RI_MOUSE_WHEEL)
 				{
-					pInput->scroll = true;
-					pInput->D = mouse.usButtonData;
+					buttons |= RI_WHEEL_FLAG;
+					pInput->delta = (short)mouse.usButtonData; // / WHEEL_DELTA
 				}
-				else
-					pInput->scroll = false;
-				pInput->rawbuttons = mouse.ulRawButtons;
+				pInput->buttons = buttons;
 			}
 			else if (raw.header.dwType == RIM_TYPEKEYBOARD)
 			{
-				pInput->type = 1;
+				pInput->type = RIM_TYPEKEYBOARD;
 				RAWKEYBOARD keyboard = raw.data.keyboard;
 				byte vk = keyboard.VKey;
 				if (vk < 146)
 				{
 					bool flag = ~keyboard.Flags & 0x01;
 					pInput->keycode = vk;
-					pInput->state = flag;
+					pInput->keystate = flag;
 					pInput->VK[vk] = flag;
 					if (vk == VK_CONTROL)
 						pInput->CTRL = flag;

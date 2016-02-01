@@ -27,19 +27,43 @@ void ContactListener::BeginContact(b2Contact* contact)
 	}
 	if (a == 1 && b == 3)
 	{
-		b2Vec2 delta = B->GetBody()->GetPosition() - manifold.points[0];
-		delta.Normalize();
-		delta *= 0.15f;
-		//A->GetBody()->ApplyForce(delta, manifold.points[0], false);
-		A->GetBody()->ApplyLinearImpulse(delta, manifold.points[0], false);
+		b2Body* body = B->GetBody();
+		Pull* pull = (Pull*)body->GetUserData();
+		if (pull->num < 9)
+		{
+			b2Vec2 delta = body->GetPosition() - manifold.points[0];
+			delta.Normalize();
+			delta *= 0.15f;
+			//A->GetBody()->ApplyForce(delta, manifold.points[0], false);
+			A->GetBody()->ApplyLinearImpulse(delta, manifold.points[0], false);
+		}
+		else
+		{
+			pull->player->fpickup = true;
+			pull->player->ball = A->GetBody();
+			b2Filter filter = {};
+			A->SetFilterData(filter);
+		}
 	}
 	else if (b == 1 && a == 3)
 	{
-		b2Vec2 delta = A->GetBody()->GetPosition() - manifold.points[0];
-		delta.Normalize();
-		delta *= 0.15f;
-		//B->GetBody()->ApplyForce(delta, manifold.points[0], false);
-		B->GetBody()->ApplyLinearImpulse(delta, manifold.points[0], false);
+		b2Body* body = A->GetBody();
+		Pull* pull = (Pull*)body->GetUserData();
+		if (pull->num < 9)
+		{
+			b2Vec2 delta = body->GetPosition() - manifold.points[0];
+			delta.Normalize();
+			delta *= 0.15f;
+			//B->GetBody()->ApplyForce(delta, manifold.points[0], false);
+			B->GetBody()->ApplyLinearImpulse(delta, manifold.points[0], false);
+		}
+		else
+		{
+			pull->player->fpickup = true;
+			pull->player->ball = B->GetBody();
+			b2Filter filter = {};
+			B->SetFilterData(filter);
+		}
 	}
 }
 

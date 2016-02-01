@@ -9,6 +9,12 @@ Player::Player(b2Body* b) : Entity(b)
 	anim_count = 0;
 }
 
+Player::~Player()
+{
+	delete push;
+	delete pull;
+}
+
 void Player::Update()
 {
 	b2Vec2 vel = body->GetLinearVelocity();
@@ -47,7 +53,27 @@ void Player::Update()
 	}
 	if (jumpcd > 0)
 		--jumpcd;
-	if (fpush && fpushcd == 0)
+	
+	if (fpickup)
+		FPickUp();
+	if (fpickupcd > 0)
+	{
+		--fpickupcd;
+		if (fpickupcd == 60)
+		{
+			b2Filter filter = {};
+			filter.categoryBits = 4;
+			filter.maskBits = 5;
+			ball->GetFixtureList()->SetFilterData(filter);
+		}
+		else if (fpickupcd == 0)
+		{
+			fpower.x = 0.0f;
+			fpower.y = 280.0f;
+			FPass();
+		}
+	}
+	if (!hasball && fpush && fpushcd == 0)
 	{
 		FPush();
 		fpushcd = 30;
@@ -56,7 +82,7 @@ void Player::Update()
 		--fpushcd;
 	if (push != NULL)
 		push->Update();
-	if (fpull && fpullcd == 0)
+	if (!hasball && fpull && fpullcd == 0)
 	{
 		FPull();
 		fpullcd = 30;
@@ -92,13 +118,12 @@ void Player::FPush()
 	b2DistanceJointDef jointDef;
 	jointDef.Initialize(body, circle, pos, pos);
 	jointDef.collideConnected = false;
-	jointDef.frequencyHz = 4.0f;
+	jointDef.frequencyHz = 0.0f;
 	jointDef.dampingRatio = 1.0f;
 	body->GetWorld()->CreateJoint(&jointDef);
 	
-
-	push = new Push(circle);
 	circle->SetUserData(this);
+	push = new Push(circle);
 }
 
 void Player::FPull()
@@ -126,11 +151,131 @@ void Player::FPull()
 	b2DistanceJointDef jointDef;
 	jointDef.Initialize(body, circle, pos, pos);
 	jointDef.collideConnected = false;
-	jointDef.frequencyHz = 4.0f;
+	jointDef.frequencyHz = 0.0f;
 	jointDef.dampingRatio = 1.0f;
 	body->GetWorld()->CreateJoint(&jointDef);
 
-
-	pull = new Pull(circle);
 	circle->SetUserData(this);
+	pull = new Pull(circle);
+}
+
+void Player::FPickUp()
+{
+	b2DistanceJointDef jointDef;
+	b2Vec2 pos = body->GetPosition();
+	ball->SetTransform(pos, ball->GetAngle());
+	ball->SetAngularVelocity(0.0f);
+	b2MassData data;
+	ball->GetMassData(&data);
+	data.mass = 0.00001f;
+	ball->SetMassData(&data);
+	b2Filter filter = {};
+	jointDef.Initialize(body, ball, pos, pos);
+	jointDef.collideConnected = false;
+	jointDef.frequencyHz = 0.0f;
+	jointDef.dampingRatio = 1.0f;
+	balljoint = body->GetWorld()->CreateJoint(&jointDef);
+	hasball = true;
+	fpickup = false;
+	fpickupcd = 120;
+}
+
+void Player::FReady()
+{
+	fpass = true;
+	fpoint.SetZero();
+	fpower.SetZero();
+
+	//create the power vector
+	b2BodyDef vecDef;
+	vecDef.type = b2_dynamicBody;
+	vecDef.fixedRotation = true;
+
+	b2Vec2 pos = body->GetPosition();
+	vecDef.position = pos;
+	powervector = body->GetWorld()->CreateBody(&vecDef);
+
+	b2EdgeShape edge;
+	edge.Set(b2Vec2_zero, b2Vec2_zero);
+
+	b2FixtureDef edgeDef;
+	edgeDef.shape = &edge;
+	edgeDef.density = 0.00001f;
+	edgeDef.filter.categoryBits = 0;
+	edgeDef.filter.maskBits = 0;
+	powervector->CreateFixture(&edgeDef);
+	b2MassData mass;
+	powervector->GetMassData(&mass);
+	mass.mass = 0.00001f;
+	powervector->SetMassData(&mass);
+
+	b2DistanceJointDef jointDef;
+	jointDef.Initialize(body, powervector, pos, pos);
+	jointDef.collideConnected = false;
+	jointDef.frequencyHz = 0.0f;
+	jointDef.dampingRatio = 1.0f;
+	body->GetWorld()->CreateJoint(&jointDef);
+}
+
+void Player::FCharge(float x, float y)
+{
+	fpoint.x += 1.5 * x;
+	fpoint.y += 1.5 * y;
+	fpower = fpoint;
+	
+	if (fpoint.LengthSquared() > 900.0f * 900.0f)
+	{
+		fpower.Normalize();
+		fpower *= 900.0f;
+	}
+
+	powervector->DestroyFixture(powervector->GetFixtureList());
+
+	//create the power vector fixture
+	b2EdgeShape edge;
+	edge.Set(b2Vec2_zero, 0.003f * fpower);
+
+	b2FixtureDef edgeDef;
+	edgeDef.shape = &edge;
+	edgeDef.density = 0.00001f;
+	edgeDef.filter.categoryBits = 0;
+	edgeDef.filter.maskBits = 0;
+	powervector->CreateFixture(&edgeDef);
+	b2MassData mass;
+	powervector->GetMassData(&mass);
+	mass.mass = 0.00001f;
+	powervector->SetMassData(&mass);
+
+	b2DistanceJointDef jointDef;
+	b2Vec2 pos = body->GetPosition();
+	jointDef.Initialize(body, powervector, pos, pos);
+	jointDef.collideConnected = false;
+	jointDef.frequencyHz = 0.0f;
+	jointDef.dampingRatio = 1.0f;
+	body->GetWorld()->CreateJoint(&jointDef);
+}
+
+void Player::FPass()
+{
+	body->GetWorld()->DestroyJoint(balljoint);
+	ball->ResetMassData();
+	b2Filter filter = {};
+	filter.categoryBits = 4;
+	filter.maskBits = 5;
+	ball->GetFixtureList()->SetFilterData(filter);
+	b2Vec2 impulse = -0.001f * fpower;
+	//ball->SetLinearVelocity(b2Vec2_zero);
+	ball->SetLinearVelocity(body->GetLinearVelocity());
+	ball->SetAngularVelocity(0.0f);
+	ball->ApplyLinearImpulse(impulse, ball->GetWorldCenter(), true);
+	fpass = false;
+	fpickupcd = 0;
+	hasball = false;
+
+	//destroyyyyyyyy
+	if (powervector)
+	{
+		body->GetWorld()->DestroyBody(powervector);
+		powervector = NULL;
+	}
 }

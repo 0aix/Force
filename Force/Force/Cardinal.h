@@ -6,6 +6,7 @@ class Scene;
 namespace Cardinal
 {
 	extern Input* pInput;
+	extern HWND hWnd;
 
 	bool Initialize(HWND hwnd);
 	void Uninitialize();

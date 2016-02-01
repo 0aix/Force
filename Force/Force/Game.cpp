@@ -38,7 +38,8 @@ namespace Game
 	void Uninitialize()
 	{
 		bExit = true;
-		WaitForMultipleObjects(3, new HANDLE[3] { audio, update, render }, true, INFINITE);
+		HANDLE handle[3] = { audio, update, render };
+		WaitForMultipleObjects(3, handle, true, INFINITE);
 		CloseHandle(audio);
 		CloseHandle(update);
 		CloseHandle(render);

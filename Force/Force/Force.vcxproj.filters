@@ -31,9 +31,6 @@
     <Filter Include="Header Files\SCENES">
       <UniqueIdentifier>{40942944-3db8-45a4-83ba-98422a652d32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\VALUES">
-      <UniqueIdentifier>{4b06af68-40ff-417d-b50e-8c914c9ed10e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\FORCE">
       <UniqueIdentifier>{917da49f-3c18-4a1f-89d1-5625b327b010}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,9 @@
     </Filter>
     <Filter Include="Source Files\WORLD">
       <UniqueIdentifier>{4ba42f4b-baf3-4d20-801d-431dcf770662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MISC">
+      <UniqueIdentifier>{4b06af68-40ff-417d-b50e-8c914c9ed10e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +97,6 @@
     <ClInclude Include="Jotunheimr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Misc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Header Files\AUDIO</Filter>
     </ClInclude>
@@ -119,10 +116,10 @@
       <Filter>Header Files\SCENES</Filter>
     </ClInclude>
     <ClInclude Include="Constants.h">
-      <Filter>Header Files\VALUES</Filter>
+      <Filter>Header Files\MISC</Filter>
     </ClInclude>
     <ClInclude Include="TO.h">
-      <Filter>Header Files\VALUES</Filter>
+      <Filter>Header Files\MISC</Filter>
     </ClInclude>
     <ClInclude Include="Scenes.h">
       <Filter>Header Files\SCENES</Filter>
@@ -138,6 +135,12 @@
     </ClInclude>
     <ClInclude Include="ContactListener.h">
       <Filter>Header Files\WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\MISC</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Header Files\MISC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

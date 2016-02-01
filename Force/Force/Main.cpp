@@ -75,6 +75,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		EndPaint(hwnd, NULL);
 		break;
+	/*case WM_KEYDOWN:
+		PostQuitMessage(0);
+		break;*/
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);

@@ -13,6 +13,7 @@ using namespace std;
 
 #include "Constants.h"
 #include "Misc.h"
+#include "Input.h"
 #include "Cardinal.h"
 #include "Jotunheimr.h"
 #include "Audio.h"

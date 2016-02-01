@@ -56,4 +56,5 @@ private:
 	double dTime = 0.0;
 
 	DebugDraw debugdraw;
+	bool reset = false;
 };
